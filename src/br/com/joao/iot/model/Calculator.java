@@ -1,26 +1,35 @@
 package br.com.joao.iot.model;
 
+import br.com.joao.iot.gui.Screen;
+
 public class Calculator {
 	
 	public void defineIpClass(Ip ip) {
 		
 		String point = ip.getClas().replace(".", "");
 		
-		int clas = Integer.parseInt(point);
-		
-		
-		if (clas >= 1 && clas <= 127) {
-			ip.setClas("A");
+		try {
+			int clas = Integer.parseInt(point);
 			
-		} else if (clas >= 128 && clas <= 191) {
-			ip.setClas("B");
-		
-		} else if (clas >= 192 && clas <= 224) {
-			ip.setClas("C");
+			if (clas >= 1 && clas <= 127) {
+				ip.setClas("A");
+				
+			} else if (clas >= 128 && clas <= 191) {
+				ip.setClas("B");
 			
-		} 
+			} else if (clas >= 192 && clas <= 224) {
+				ip.setClas("C");
+					
+			} 
+			
+			defineMaskBinary(ip);
+			
+		} catch (Exception e) {
+			
+			
+		}
 		
-		defineMaskBinary(ip);
+		
 	}
 	
 	public void defineMaskBinary(Ip ip) {
@@ -80,6 +89,23 @@ public class Calculator {
 		
 		ip.setIpQuantd(Math.pow(2, 32 - cidr));
 		
+		
 	}
 	
+	public String[] vectorResult(Ip ip) {
+		
+		String[] result = {
+			
+			"A classe do IP " + ip.getIp() + " é: " + ip.getClas(),
+			"",
+			"A máscara é: " + ip.getMask(),
+			"",
+			"A quantidade de hosts disponíveis é igual a: " + ip.getIpQuantd()
+			
+				
+		};
+		
+		return result;
+	}
+
 }

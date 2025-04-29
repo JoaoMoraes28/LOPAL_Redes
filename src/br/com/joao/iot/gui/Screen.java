@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import br.com.joao.iot.model.Calculator;
@@ -17,7 +19,9 @@ public class Screen {
 	private JTextField textIp;
 	private JLabel labelIp;
 	private JButton buttonCalc;
-	private JLabel labelResult;
+	private JScrollPane scroll;
+	private JList listIp;
+	private JScrollPane error;
 	
 	
 	public void createScreen() {
@@ -40,11 +44,12 @@ public class Screen {
 		
 		buttonCalc = new JButton();
 		buttonCalc.setText("Fornecer Dados");
-		buttonCalc.setBounds(175, 130, 150, 30);
+		buttonCalc.setBounds(175, 120, 150, 30);
 		
-		labelResult = new JLabel();
-		labelResult.setBounds(125, 180, 200, 200);
+		listIp = new JList();
 		
+		scroll = new JScrollPane(listIp);
+		scroll.setBounds(50, 180, 400, 200);
 		
 		buttonCalc.addActionListener(new ActionListener() {
 			
@@ -60,7 +65,8 @@ public class Screen {
 				Calculator calculator = new Calculator();
 				calculator.defineIpClass(ip);
 				
-				labelResult.setText(ip.getClas());
+				String[] resultEnd = calculator.vectorResult(ip);
+				listIp.setListData(resultEnd);
 				
 			}
 		});
@@ -68,23 +74,9 @@ public class Screen {
 		container.add(textIp);	
 		container.add(labelIp);
 		container.add(buttonCalc);
-		container.add(labelResult);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		container.add(scroll);
 		
 		screen.setVisible(true);
 	}
+	
 }
