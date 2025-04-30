@@ -2,14 +2,16 @@ package br.com.joao.iot.model;
 
 public class Ip {
 	
+	// Variables of class 
 	private String ip;
 	private String mask;
 	private String maskBinary;
-	private double ipQuantd;
+	private int ipQuantd;
 	private String cidr;
 	private String clas;
 
 	
+	// Methods getters and setters
 	public String getIp() {
 		return ip;
 	}
@@ -35,11 +37,11 @@ public class Ip {
 		this.maskBinary = maskBinary;
 	}
 	
-	public double getIpQuantd() {
+	public int getIpQuantd() {
 		return ipQuantd;
 	}
 	
-	public void setIpQuantd(double ipQuantd) {
+	public void setIpQuantd(int ipQuantd) {
 		this.ipQuantd = ipQuantd;
 	}
 	
@@ -59,11 +61,15 @@ public class Ip {
 		this.clas = clas;
 	}
 	
+	
+	// Function for get the CIDR of IP 
 	public String extractCidr() {
 		cidr = ip.substring(ip.length() - 2);
 		return cidr;
 	}
 	
+	
+	// Function for get the three first character of IP and get the class 
 	public String extractClas() {
 		clas = ip.substring(0 , 3);
 		return clas;
