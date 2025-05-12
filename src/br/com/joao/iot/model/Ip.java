@@ -9,58 +9,19 @@ public class Ip {
 	private int ipQuantd;
 	private String cidr;
 	private String clas;
+	
+	// Variable utilized for determined case have a error
+	private String error = "";
 
-	
-	// Methods getters and setters
-	public String getIp() {
-		return ip;
-	}
-	
+	// Method set of IP
 	public String setIp(String ip) {
 		this.ip = ip;
 		return ip;
 	}
 	
-	public String getMask() {
-		return mask;
+	public String getError() {
+		return error;
 	}
-	
-	public void setMask(String mask) {
-		this.mask = mask;
-	}
-	
-	public String getMaskBinary() {
-		return maskBinary;
-	}
-	
-	public void setMaskBinary(String maskBinary) {
-		this.maskBinary = maskBinary;
-	}
-	
-	public int getIpQuantd() {
-		return ipQuantd;
-	}
-	
-	public void setIpQuantd(int ipQuantd) {
-		this.ipQuantd = ipQuantd;
-	}
-	
-	public String getCidr() {
-		return cidr;
-	}
-	
-	public void setCidr(String cidr) {
-		this.cidr = cidr;
-	}
-
-	public String getClas() {
-		return clas;
-	}
-
-	public void setClas(String clas) {
-		this.clas = clas;
-	}
-	
 	
 	// Function for get the CIDR of IP 
 	public String extractCidr() {
@@ -75,4 +36,158 @@ public class Ip {
 		return clas;
 	}
 	
+	
+	
+		public void defineIpClass() {
+			
+			// Variable contend the three first digits without "."
+			String point = clas.replace(".", "");
+			
+			// Block utilized for determine if entrance of data this correct 
+			try {
+				
+				// Variable responsible for transform of String for int  
+				int clasInt = Integer.parseInt(point);
+				
+				// If and Else utilized for defined the class of IP  
+				if (clasInt >= 1 && clasInt <= 127) {
+					clas = "A";
+					
+				} else if (clasInt >= 128 && clasInt <= 191) {
+					clas = "B";
+				
+				} else if (clasInt >= 192 && clasInt <= 224) {
+					clas = "C";
+						
+				} 
+				
+				defineMaskAndMaskBinary();
+				 
+			} catch (Exception e) {
+				
+				error = "x";
+			}
+			
+			
+		}
+
+		public void defineMaskAndMaskBinary() {
+			 
+			// Variable responsible for transform of String for int
+			int cidrInt = Integer.parseInt(cidr);
+			int test = cidrInt;
+			
+			// Variable contend the keys binary for determine the sub-net  
+			int[] binary = {
+					128,
+					64,
+					32,
+					16,
+					8,
+					4,
+					2,
+					1
+			};
+			
+			// While utilized for extract the number multiplier of sub-net 
+			while (test >= 8) {
+				test-=8;
+			}
+			
+			int cidrDec = 0;
+			int begin = 0;
+			int i = 0;
+			
+			// If and Else for define if the mask will 255 or another number 
+			if (test > 0) {
+				
+				// While responsible for calculation of sub-mask 
+				while (begin < test) {
+					cidrDec += binary[i];
+					i++;
+					begin++;
+				}
+			} else {
+				cidrDec = 255;
+			
+			}
+				
+			int mask255 = 255;
+			String mask255Binary = Integer.toBinaryString(mask255);
+			String cidrBinary = Integer.toBinaryString(cidrDec);
+			
+			// If's and Else's that will assemble the mask in decimal and binary completely 
+			if (cidrInt <= 8) {
+				mask = cidrDec + "." + "0" + "." + "0" + "." + "0";
+				
+			} else if (cidrInt > 8 && cidrInt <= 16) {
+				mask = mask255 + "." + cidrDec + "." + "0" + "." + "0";
+				
+			} else if (cidrInt > 16 && cidrInt <= 24) {
+				mask = mask255 + "." + mask255 + "." + cidrDec + "." + "0";
+				
+			} else if (cidrInt > 24 && cidrInt <= 32) {
+				mask = mask255 + "." + mask255 + "." + mask255 + "." + cidrDec;
+				
+			}
+			
+			if (cidrInt <= 8) {
+				maskBinary = cidrBinary + " . " + "00000000" + " . " + "00000000" + " . " + "00000000";
+				
+			} else if (cidrInt > 8 && cidrInt <= 16) {
+				maskBinary = mask255Binary + " . " + cidrBinary + " . " + "00000000" + " . " + "00000000";
+				
+			} else if (cidrInt > 16 && cidrInt <= 24) {
+				maskBinary = mask255Binary + " . " + mask255Binary + " . " + cidrBinary + " . " + "00000000";
+				
+			} else if (cidrInt > 24 && cidrInt <= 32) {
+				maskBinary = mask255Binary + " . " + mask255Binary + " . " + mask255Binary + " . " + cidrBinary;
+				
+			}
+			
+			
+			calculateIp(cidrInt);
+		}
+
+		public void calculateIp(int cidr) {
+			
+			// Calculation for get the quantity of IP's available and conversation of Double for int
+			double quantdDouble = (Math.pow(2, 32 - cidr) - 2);
+			int quantdInt = (int)quantdDouble;
+			
+			ipQuantd = quantdInt;
+		}
+		
+		public String[] vectorResult() {
+			
+			// Vector that will store all result and print in JList 
+			String[] result = null;
+			
+			if (error.equals("")) {
+				result = new String[] {
+				
+					"A classe do IP " + ip + " é: " + clas,
+					"",
+					"A máscara é: " + mask,
+					"",
+					"A quantidade de hosts disponíveis é igual a: " + ipQuantd,
+					"",
+					"A máscara deste IP em binário é: " + maskBinary
+				};
+				
+			} else {
+				result = new String[] {
+					
+					""	
+					
+				};
+			}
+			
+			return result;
+		}
+
+
+
+
+
 }

@@ -1,6 +1,8 @@
 package br.com.joao.iot.gui;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +13,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import br.com.joao.iot.model.Calculator;
 import br.com.joao.iot.model.Ip;
 
 public class Screen {
@@ -22,7 +23,7 @@ public class Screen {
 	private JButton buttonCalc;
 	private JScrollPane scroll;
 	private JList listIp;
-	private JScrollPane error;
+	private JLabel labelError;
 	
 	
 	public void createScreen() {
@@ -57,7 +58,13 @@ public class Screen {
 		
 		// Creating JScrollPane and determinate yours features
 		scroll = new JScrollPane(listIp);
-		scroll.setBounds(50, 180, 400, 200);
+		scroll.setBounds(07, 180, 470, 200);
+		
+		// Creating JLabel error and determinate yours features
+		labelError = new JLabel();
+		labelError.setForeground(Color.red);
+		labelError.setHorizontalAlignment(JTextField.CENTER);
+		labelError.setBounds(0, 405, 500, 20);;
 		
 		// Creating Listener of Button
 		buttonCalc.addActionListener(new ActionListener() {
@@ -66,21 +73,24 @@ public class Screen {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				labelError.setText("");
+				
 				Ip ip = new Ip();
 				
 				ip.setIp(textIp.getText());
 				ip.extractCidr();
 				ip.extractClas();
 				
-				Calculator calculator = new Calculator();
-				
 				// Passing Object IP for defineClass 
-				calculator.defineIpClass(ip);
+				ip.defineIpClass();
 				
 				// Printing result in JList
-				String[] resultEnd = calculator.vectorResult(ip);
+				String[] resultEnd = ip.vectorResult();
 				listIp.setListData(resultEnd);
 				
+				if (ip.getError().equals("x")) {
+					labelError.setText("Valor digitado inválido");
+				}
 			}
 		});
 		
@@ -89,6 +99,7 @@ public class Screen {
 		container.add(labelIp);
 		container.add(buttonCalc);
 		container.add(scroll);
+		container.add(labelError);
 		
 		// Turned Screen visible
 		screen.setVisible(true);
