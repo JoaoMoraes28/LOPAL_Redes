@@ -1,5 +1,6 @@
 package br.com.joao.iot.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -30,41 +32,50 @@ public class Screen {
 		
 		// Configures of screen
 		JFrame screen = new JFrame();
-		screen.setSize(500, 700);
+		screen.setSize(500, 480);
 		screen.setTitle("Calculadora de Redes");
 		screen.setResizable(false);
 		screen.setLayout(null);
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// Container for add components
+		// Creating container for add components and Font's for elements
 		Container container = screen.getContentPane();
+		Font fontError =  new Font("Arial" , Font.ITALIC , 25);
+		Font fontGeneral = new Font("Arial" , Font.PLAIN , 15);
+		Font fontList = new Font("Arial" , Font.PLAIN , 13);
 		
 		// Creating JLabel and determinate yours features
 		labelIp = new JLabel();
 		labelIp.setText("Insira o IP");
-		labelIp.setBounds(220, 20, 60, 30);
+		labelIp.setFont(fontGeneral);
+		labelIp.setHorizontalAlignment(JLabel.CENTER);
+		labelIp.setBounds(0, 20, 500, 30);
 		
 		// Creating JTextField and determinate yours features
 		textIp = new JTextField();
-		textIp.setBounds(200, 60, 100, 30);
+		textIp.setFont(fontGeneral);
+		textIp.setBounds(175, 60, 150, 30);
 		
 		// Creating JButton and determinate yours features
 		buttonCalc = new JButton();
+		buttonCalc.setFont(fontGeneral);
 		buttonCalc.setText("Fornecer Dados");
 		buttonCalc.setBounds(175, 120, 150, 30);
 		
 		// Creating JList
 		listIp = new JList();
+		listIp.setFont(fontList);
 		
 		// Creating JScrollPane and determinate yours features
 		scroll = new JScrollPane(listIp);
-		scroll.setBounds(07, 180, 470, 200);
+		scroll.setBounds(07, 180, 470, 120);
 		
 		// Creating JLabel error and determinate yours features
 		labelError = new JLabel();
+		labelError.setFont(fontError);
 		labelError.setForeground(Color.red);
-		labelError.setHorizontalAlignment(JTextField.CENTER);
-		labelError.setBounds(0, 405, 500, 20);;
+		labelError.setHorizontalAlignment(JLabel.CENTER);
+		labelError.setBounds(0, 325, 500, 40);;
 		
 		// Creating Listener of Button
 		buttonCalc.addActionListener(new ActionListener() {
@@ -80,14 +91,14 @@ public class Screen {
 				ip.setIp(textIp.getText());
 				ip.extractCidr();
 				ip.extractClas();
-				
-				// Passing Object IP for defineClass 
+				 
 				ip.defineIpClass();
 				
 				// Printing result in JList
 				String[] resultEnd = ip.vectorResult();
 				listIp.setListData(resultEnd);
 				
+				//If for print in screen the message of error
 				if (ip.getError().equals("x")) {
 					labelError.setText("Valor digitado inválido");
 				}

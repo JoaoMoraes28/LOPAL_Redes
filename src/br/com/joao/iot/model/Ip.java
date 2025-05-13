@@ -29,25 +29,22 @@ public class Ip {
 		return cidr;
 	}
 	
-	
 	// Function for get the three first character of IP and get the class 
 	public String extractClas() {
 		clas = ip.substring(0 , 3);
 		return clas;
 	}
 	
-	
-	
 		public void defineIpClass() {
 			
 			// Variable contend the three first digits without "."
-			String point = clas.replace(".", "");
+			clas = clas.replace(".", "");
 			
 			// Block utilized for determine if entrance of data this correct 
 			try {
 				
 				// Variable responsible for transform of String for int  
-				int clasInt = Integer.parseInt(point);
+				int clasInt = Integer.parseInt(clas);
 				
 				// If and Else utilized for defined the class of IP  
 				if (clasInt >= 1 && clasInt <= 127) {
@@ -56,10 +53,16 @@ public class Ip {
 				} else if (clasInt >= 128 && clasInt <= 191) {
 					clas = "B";
 				
-				} else if (clasInt >= 192 && clasInt <= 224) {
-					clas = "C";
-						
-				} 
+				} else if (clasInt >= 192 && clasInt <= 223) {
+					clas = "C";	
+				
+				} else if (clasInt >= 224 && clasInt <= 239) {
+					clas = "D";
+					
+				} else if (clasInt >= 240 && clasInt <= 255) {
+					clas = "E";
+					
+				}
 				
 				defineMaskAndMaskBinary();
 				 
@@ -155,7 +158,14 @@ public class Ip {
 			double quantdDouble = (Math.pow(2, 32 - cidr) - 2);
 			int quantdInt = (int)quantdDouble;
 			
-			ipQuantd = quantdInt;
+			if (quantdInt < 0) {
+				ipQuantd = 0;
+			} else {
+				ipQuantd = quantdInt;
+			}
+			
+			
+			
 		}
 		
 		public String[] vectorResult() {
@@ -185,9 +195,5 @@ public class Ip {
 			
 			return result;
 		}
-
-
-
-
 
 }
