@@ -13,41 +13,58 @@ public class Ip {
 	private String cidr;
 	private String clas;
 
-	// Variable utilized for determined case have a error
+	// Variable used to activate the error message, if there is one
 	private String error = "";
 
 	// Method set of IP
 	public String setIp(String ip) {
-		
-		String firstRegex = "\\.(\\d+)\\.";
-		String secondRegex = "(?:\\d+\\.)(?:\\d+\\.)(\\d+)\\.";
-		String thirdRegex = "(?:\\d+\\.)(?:\\d+\\.)(?:\\d+\\.)(\\d+)\\.";
-		
-		
-		
+
+		// Regex for finder values of IP
+		String firstRegex = "\\.(.*?)\\.";
+		String secondRegex = "^(?:[^.]*\\.){2}([^.]*)";
+		String thirdRegex = "^(?:[^.]*\\.){3}([^/]*)";
+
+		// Pattern's and Matcher's
 		Pattern firstPattern = Pattern.compile(firstRegex);
 		Matcher firstMatcher = firstPattern.matcher(ip);
-		
+
 		Pattern secondPattern = Pattern.compile(secondRegex);
 		Matcher secondMatcher = secondPattern.matcher(ip);
-		
+
 		Pattern thirdPattern = Pattern.compile(thirdRegex);
 		Matcher thirdMatcher = thirdPattern.matcher(ip);
-		
-		
-		if (firstMatcher.find()) {
-			System.out.println(firstMatcher.group(1));
-		} 
-		
-		if (secondMatcher.find()) {
-			System.out.println(secondMatcher.group(1));
+
+		// Try and catch for validation of values of matcher's
+		try {
+
+			if (firstMatcher.find()) {
+				int firstMatcherInt = Integer.parseInt(firstMatcher.group(1));
+
+				if (firstMatcherInt < 0 || firstMatcherInt > 255) {
+					error = "x";
+				}
+			}
+
+			if (secondMatcher.find()) {
+				int secondMatcherInt = Integer.parseInt(secondMatcher.group(1));
+
+				if (secondMatcherInt < 0 || secondMatcherInt > 255) {
+					error = "x";
+				}
+			}
+
+			if (thirdMatcher.find()) {
+				int thirdMatcherInt = Integer.parseInt(thirdMatcher.group(1));
+
+				if (thirdMatcherInt < 0 || thirdMatcherInt > 255) {
+					error = "x";
+				}
+			}
+
+		} catch (Exception e) {
+			error = "x";
 		}
-		
-		if (thirdMatcher.find()) {
-			System.out.printf("buscando...%s", thirdMatcher.group(1));
-		}else {
-			System.out.println("error");
-		}
+
 		this.ip = ip;
 		return ip;
 	}
@@ -67,7 +84,7 @@ public class Ip {
 		clas = ip.substring(0, 3);
 		return clas;
 	}
-	
+
 	public void defineIpClass() {
 
 		// Variable contend the three first digits without "."
@@ -95,6 +112,8 @@ public class Ip {
 			} else if (clasInt >= 240 && clasInt <= 255) {
 				clas = "E";
 
+			} else {
+				error = "x";
 			}
 
 			defineMaskAndMaskBinary();
@@ -107,12 +126,13 @@ public class Ip {
 	}
 
 	public void defineMaskAndMaskBinary() {
-		
+
 		// Variable responsible for transform of String for int
 		int cidrInt = Integer.parseInt(cidr);
 		int test = cidrInt;
 
-		if (cidrInt > 32) {
+		// 
+		if (cidrInt < 0 || cidrInt > 32) {
 			error = "x";
 		}
 
@@ -193,7 +213,7 @@ public class Ip {
 
 	}
 
-	public String[] vectorResult() {
+	public String[] assembleResultVector() {
 
 		// Vector that will store all result and print in JList
 		String[] result = null;

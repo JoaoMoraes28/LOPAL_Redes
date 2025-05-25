@@ -93,12 +93,12 @@ public class Screen {
 				ip.defineIpClass();
 
 				// Printing result in JList
-				String[] resultEnd = ip.vectorResult();
+				String[] resultEnd = ip.assembleResultVector();
 				listIp.setListData(resultEnd);
 
 				// If for print in screen the message of error
 				if (ip.getError().equals("x")) {
-					labelError.setText("Valor digitado inválido");
+					labelError.setText("IP inválido");
 				}
 			}
 		});
