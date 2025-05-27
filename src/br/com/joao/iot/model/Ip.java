@@ -12,6 +12,7 @@ public class Ip {
 	private int ipQuantd;
 	private String cidr;
 	private String clas;
+	private int[] networkIp;
 
 	// Variable used to activate the error message, if there is one
 	private String error = "";
@@ -131,7 +132,7 @@ public class Ip {
 		int cidrInt = Integer.parseInt(cidr);
 		int test = cidrInt;
 
-		// 
+		//
 		if (cidrInt < 0 || cidrInt > 32) {
 			error = "x";
 		}
@@ -194,7 +195,10 @@ public class Ip {
 			maskBinary = mask255Binary + " . " + mask255Binary + " . " + mask255Binary + " . " + cidrBinary;
 
 		}
-
+		
+		
+		calculateNetwork(test);
+//		calculateBroadcasting(test);
 		calculateIp(cidrInt);
 	}
 
@@ -236,4 +240,55 @@ public class Ip {
 		return result;
 	}
 
-}
+	public void calculateNetwork(int test) {
+
+		// Variable contend the keys binary for determine the sub-net
+		int[] binary = { 2, 4, 8, 16, 32, 64, 128 };
+		
+		
+		
+		if (test == 0) {
+			System.out.println("erroraaa");
+		} else {
+			int divisor = +binary[test - 1];
+			int quantIpNetwork = 256 / divisor;
+			int i = 0;
+			networkIp = new int[divisor];
+			
+			while (i < divisor) {
+				int result = quantIpNetwork * i;
+				networkIp[i] = result;
+	
+				System.out.println(networkIp[i]);
+				i++;
+			}
+		}
+	}
+
+//	public void calculateBroadcasting(int test) {
+//
+//		// Variable contend the keys binary for determine the sub-net
+//		int[] binary = { 2, 4, 8, 16, 32, 64, 128 };
+//		int divisor = +binary[test - 1];
+//		int[] broadcastingIp = new int[divisor];
+//
+//		if (test == 0) {
+//
+//		} else {
+//			int quantIpBroadcasting = 256 / divisor;
+//			int i = 0;
+//			int ib = 1;
+//
+//			while (i < divisor) {
+//				int result = quantIpBroadcasting * ib - 1;
+//				broadcastingIp[i] = result;
+//
+//				System.out.println(broadcastingIp[i]);
+//				i++;
+//				ib++;
+//			}
+//		}
+
+	}
+
+
