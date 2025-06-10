@@ -121,9 +121,13 @@ public class Screen {
 					listIpSubnet.setListData(resultSubnet);
 				}
 
-				// If for print in screen the message of error
+				// If for print in screen the message of error or sub-net
 				if (ip.getError().equals("x")) {
 					labelError.setText("IP inválido");
+				} else if (ip.getRestCidr() == 0) {
+					labelError.setText("Este IP não possui sub rede");
+				} else if (ip.getCidr() < 24) {
+					labelError.setText("Calculo de sub rede a partir de CIDR 24");
 				}
 			}
 		});

@@ -223,10 +223,10 @@ public class Ip {
 
 		}
 
-		calculateIp();
+		calculateQuantIp();
 	}
 
-	public void calculateIp() {
+	public void calculateQuantIp() {
 
 		// Calculation for get the quantity of IP's available and conversation of Double for int
 		double quantdDouble = (Math.pow(2, 32 - getCidr()) - 2);
@@ -248,9 +248,14 @@ public class Ip {
 		if (error.equals("")) {
 			result = new String[] {
 
-					"A classe do IP " + ip + " é: " + clas, "", "A máscara é: " + mask, "",
-					"A quantidade de hosts disponíveis por rede é igual a: " + ipQuantd, "",
-					"A máscara deste IP em binário é: " + maskBinary };
+					"A classe do IP " + ip + " é: " + clas, 
+					"", 
+					"A máscara é: " + mask, 
+					"",
+					"A quantidade de hosts disponíveis por rede é igual a: " + ipQuantd, 
+					"",
+					"A máscara deste IP em binário é: " + maskBinary 
+			};
 
 		} else {
 			result = new String[] {
